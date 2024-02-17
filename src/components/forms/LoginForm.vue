@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { useAuthStore } from "@/stores/auth";
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
+
+const auth = useAuthStore();
+
+// Define a reactive variable to track whether login was attempted
+const loginAttempted = ref(false);
 
 const user = reactive({
   email: "",
@@ -11,7 +16,7 @@ async function onSubmit() {
   if (user.email != "" && user.password != "") {
     const loginSuccess = await useAuthStore().login(user.email, user.password);
     if (!loginSuccess) {
-      alert("Invalid Credentials!");
+      loginAttempted.value = true;
     }
   }
 }
@@ -43,6 +48,15 @@ async function onSubmit() {
                   Log in
                 </h3>
 
+                <!-- Alert Message -->
+                <div
+                  v-if="!auth.isAuthenticated && loginAttempted"
+                  class="alert alert-light"
+                  role="alert"
+                >
+                  Invalid credentials!
+                  <a class="link-info" href="#!">Forgot password?</a>
+                </div>
                 <div class="form-outline mb-4">
                   <input
                     v-model="user.email"

@@ -2,6 +2,7 @@ import router from "@/router";
 import { BASE_URL } from "@/router/api";
 import { defineStore } from "pinia";
 
+
 // Function to parse JWT token
 function parseJwt(token: string) {
   const base64Url = token.split(".")[1];
@@ -28,6 +29,19 @@ export const useAuthStore = defineStore({
       token: storedToken ? JSON.parse(storedToken) : null,
       authority: storedAuthority ? JSON.parse(storedAuthority) : null,
     };
+  },
+
+  getters: {
+    isAuthenticated(): boolean {
+      return !!this.token && !this.isTokenExpired;
+    },
+
+    isTokenExpired() {
+      if (!this.token) return true;
+      const tokenPayload = parseJwt(this.token);
+      const expirationTime = tokenPayload.exp * 1000; // Expiration time in milliseconds
+      return Date.now() >= expirationTime;
+    }
   },
 
   actions: {
