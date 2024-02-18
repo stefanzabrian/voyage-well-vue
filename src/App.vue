@@ -30,7 +30,7 @@ const auth = useAuthStore();
   background-image: url("./assets/pictures/jason-steffan.jpg");
   background-size: cover;
   background-position: center;
-  height: 100%;
+  height: 100vh;
 }
 
 .main-content {

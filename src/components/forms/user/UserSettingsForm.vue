@@ -1,4 +1,34 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useAuthStore } from '@/stores/auth';
+import { useUserStore } from '@/stores/user';
+import { onMounted, reactive } from 'vue';
+
+const user = reactive({
+  firstName: "",
+  lastName: "",
+  nickName: "",
+  email: "",
+  bioInfo: "",
+  phoneNumber: "",
+  avatarUrl: ""
+})
+const userStore = useUserStore();
+
+onMounted(async () => {
+  // Call the profileView function to fetch user data
+  const userData = await userStore.profileView();
+  
+  // Populate the user reactive object with the fetched data
+  user.firstName = userData.firstName;
+  user.lastName = userData.lastName;
+  user.nickName = userData.nickName;
+  user.email = userData.email;
+  user.bioInfo = userData.bioInfo;
+  user.phoneNumber = userData.phoneNumber;
+  user.avatarUrl = userData.avatarUrl;
+});
+
+</script>
 
 <template>
   <div class="container">
@@ -46,27 +76,24 @@
               <div class="col">
                 <div class="row align-items-center">
                   <div class="col-md-7">
-                    <h4 class="mb-1">Brown, Asher</h4>
+                    <h4 class="mb-1">{{user.firstName}} {{user.lastName}}</h4>
                     <p class="small mb-3">
-                      <span class="badge text-black">New York, USA</span>
+                      <span class="badge text-white">New York, USA</span>
                     </p>
                   </div>
                 </div>
                 <div class="row mb-4">
                   <div class="col-md-7">
-                    <p class="text-muted">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Mauris blandit nisl ullamcorper, rutrum metus in, congue
-                      lectus. In hac habitasse platea dictumst. Cras urna quam,
-                      malesuada vitae risus at, pretium blandit sapien.
+                    <p class="text-white">
+                      {{user.bioInfo}}
                     </p>
                   </div>
                   <div class="col">
-                    <p class="small mb-0 text-muted">Nec Urna Suscipit Ltd</p>
-                    <p class="small mb-0 text-muted">
+                    <p class="small mb-0 text-white">Nec Urna Suscipit Ltd</p>
+                    <p class="small mb-0 text-white">
                       P.O. Box 464, 5975 Eget Avenue
                     </p>
-                    <p class="small mb-0 text-muted">(537) 315-1481</p>
+                    <p class="small mb-0 text-white">(537) 315-1481</p>
                   </div>
                 </div>
               </div>
@@ -74,66 +101,75 @@
             <hr class="my-4" />
             <div class="form-row">
               <div class="form-group col-md-6">
-                <label for="firstname">Firstname</label>
+                <label for="firstname">First name</label>
                 <input
                   type="text"
                   id="firstname"
                   class="form-control"
-                  placeholder="Brown"
+                  placeholder="Firstname"
+                  v-model="user.firstName"
                 />
               </div>
               <div class="form-group col-md-6">
-                <label for="lastname">Lastname</label>
+                <label for="last name">Last name</label>
                 <input
                   type="text"
                   id="lastname"
                   class="form-control"
-                  placeholder="Asher"
+                  placeholder="Last name"
+                  v-model="user.lastName"
+                />
+              </div>
+              <div class="form-group col-md-6">
+                <label for="nickname">Nick name</label>
+                <input
+                  type="text"
+                  id="nickname"
+                  class="form-control"
+                  placeholder="Nick name"
+                  v-model="user.nickName"
+                />
+              </div>
+              <div class="form-group col-md-2">
+                <label for="phone-number">Phone number</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="phone-number"
+                  placeholder="+40 727 999 000..."
+                  v-model="user.phoneNumber"
                 />
               </div>
             </div>
             <div class="form-group">
-              <label for="inputEmail4">Email</label>
+              <label for="email">Email</label>
               <input
                 type="email"
                 class="form-control"
-                id="inputEmail4"
-                placeholder="brown@asher.me"
+                id="email"
+                placeholder="example@email.com"
+                v-model="user.email"
               />
             </div>
             <div class="form-group">
-              <label for="inputAddress5">Address</label>
+              <label for="bio-info">Bio info</label>
               <input
                 type="text"
                 class="form-control"
-                id="inputAddress5"
-                placeholder="P.O. Box 464, 5975 Eget Avenue"
+                id="bio0info"
+                placeholder="Say something about you..."
+                v-model="user.bioInfo"
               />
             </div>
             <div class="form-row">
-              <div class="form-group col-md-6">
-                <label for="inputCompany5">Company</label>
+              <div class="form-group">
+                <label for="avatar-url">Avatar picture url</label>
                 <input
                   type="text"
                   class="form-control"
-                  id="inputCompany5"
-                  placeholder="Nec Urna Suscipit Ltd"
-                />
-              </div>
-              <div class="form-group col-md-4">
-                <label for="inputState5">State</label>
-                <select id="inputState5" class="form-control">
-                  <option selected="">Choose...</option>
-                  <option>...</option>
-                </select>
-              </div>
-              <div class="form-group col-md-2">
-                <label for="inputZip5">Zip</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="inputZip5"
-                  placeholder="98232"
+                  id="avatar-url"
+                  placeholder="https://url.jpg"
+                  v-model="user.avatarUrl"
                 />
               </div>
             </div>
