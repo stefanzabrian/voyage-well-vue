@@ -2,7 +2,6 @@ import router from "@/router";
 import { BASE_URL } from "@/router/api";
 import { defineStore } from "pinia";
 
-
 // Function to parse JWT token
 function parseJwt(token: string) {
   const base64Url = token.split(".")[1];
@@ -41,7 +40,7 @@ export const useAuthStore = defineStore({
       const tokenPayload = parseJwt(this.token);
       const expirationTime = tokenPayload.exp * 1000; // Expiration time in milliseconds
       return Date.now() >= expirationTime;
-    }
+    },
   },
 
   actions: {
@@ -58,7 +57,6 @@ export const useAuthStore = defineStore({
         const responseData = await response.json();
         const accessToken = responseData.accessToken;
         const tokenPayload = parseJwt(accessToken);
-        console.log("Token payload:", tokenPayload);
         const authority = tokenPayload.authorities[0];
 
         localStorage.setItem("user", JSON.stringify(email));
@@ -67,21 +65,58 @@ export const useAuthStore = defineStore({
         this.user = email;
         this.token = accessToken;
         this.authority = authority;
-        router.push("/")
+        router.push("/");
         return true;
+      } else {
+        return false;
+      }
+    },
+    async register(
+      email: string,
+      password: string,
+      confirmPassword: string,
+      firstName: string,
+      lastName: string,
+      nickName: string,
+      acceptedConditions: boolean
+    ) {
+      const response = await fetch(`${BASE_URL}/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          confirmPassword,
+          firstName,
+          lastName,
+          nickName,
+          acceptedConditions,
+        }),
+      });
+      if (response.status == 201) {
+        router.push("/login");
+        return true;
+      } else if (response.status == 409) {
+        return 409;
+      } else if (response.status == 400) {
+        return 400;
+      } else if (response.status == 500) {
+        return 500;
       } else {
         return false;
       }
     },
 
     logout() {
-        this.user = null;
-        this.token = null;
-        this.authority = null;
-        localStorage.removeItem("user");
-        localStorage.removeItem("token");
-        localStorage.removeItem("authority");
-        router.push("/login");
+      this.user = null;
+      this.token = null;
+      this.authority = null;
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      localStorage.removeItem("authority");
+      router.push("/login");
     },
   },
 });

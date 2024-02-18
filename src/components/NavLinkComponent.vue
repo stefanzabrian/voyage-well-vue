@@ -1,21 +1,24 @@
 <template>
   <div>
-    <div class=" p-2 nav-scroller bg-body shadow-sm">
-      <nav class="nav nav-underline" aria-label="Secondary navigation">
-        <a class="nav-link active" aria-current="page" href="#">Dashboard</a>
-        <a class="nav-link" href="#">
-          Friends
-          <span class="badge bg-light text-dark rounded-pill align-text-bottom"
-            >27</span
-          >
-        </a>
-        <a class="nav-link" href="#">Explore</a>
-        <a class="nav-link" href="#">Suggestions</a>
-        <a class="nav-link" href="#">Link</a>
-        <a class="nav-link" href="#">Link</a>
+    <div class="p-2 nav-scroller shadow-sm text-bg-gradient">
+      <nav class="nav nav-underline justify-content-flex-start" aria-label="Secondary navigation">
+        <a class="nav-link px-2 text-white" aria-current="page" href="#">Dashboard</a>
+        <a class="nav-link px-2 text-white" href="#">Users</a>
+        <a class="nav-link px-2 text-white" href="#">Hotels</a>
+        <a class="nav-link px-2 text-white" href="#">Rooms</a>
+        <a class="nav-link px-2 text-white" href="#">Link</a>
       </nav>
     </div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<style scoped>
+.text-bg-gradient {
+  background-image: linear-gradient(
+    to right,
+    #21627cda,
+    #250333
+  ); /* Change the colors here */
+  color: rgb(255, 255, 255); /* Set text color to white */
+  position: relative;
+}</style>

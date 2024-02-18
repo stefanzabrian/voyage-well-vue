@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import router from "@/router";
 import { useAuthStore } from "@/stores/auth";
+import { ref } from "vue";
 import { RouterLink } from "vue-router";
 const auth = useAuthStore();
+const showNavLinks = ref(false);
+function toggleNavLinks() {
+  showNavLinks.value = !showNavLinks.value;
+}
 
 const logout = () => {
   auth.logout();
@@ -11,7 +16,7 @@ const logout = () => {
 </script>
 
 <template>
-  <header class="p-3 text-bg-dark">
+  <header class="p-3 text-bg-gradient">
     <div class="container">
       <div
         class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"
@@ -34,14 +39,16 @@ const logout = () => {
         <ul
           class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"
         >
-          <li><a href="/" class="nav-link px-2 text-secondary">Home</a></li>
-          <li v-if="auth.isAuthenticated">
+          <li><a href="/" class="nav-link px-2 text-white">Home</a></li>
+          <li v-if="auth.isAuthenticated && !showNavLinks">
             <a href="#" class="nav-link px-2 text-white">Features</a>
           </li>
-          <li v-if="auth.isAuthenticated">
-            <a href="#" class="nav-link px-2 text-white">FAQs</a>
-          </li>
-          <li><a href="#" class="nav-link px-2 text-white">About</a></li>
+          <li v-if="!showNavLinks"><a href="#" class="nav-link px-2 text-white" @click="toggleNavLinks">More</a></li>
+          <template v-if="showNavLinks">
+            <li v-if="auth.isAuthenticated"><a href="#" class="nav-link px-2 text-white" @click="toggleNavLinks">Features</a></li>
+            <li v-if="auth.isAuthenticated"><a href="#" class="nav-link px-2 text-white" @click="toggleNavLinks">FAQs</a></li>
+            <li><a href="#" class="nav-link px-2 text-white" @click="toggleNavLinks">About</a></li>
+          </template>
         </ul>
         <form
           v-if="auth.isAuthenticated"
@@ -50,7 +57,7 @@ const logout = () => {
         >
           <input
             type="search"
-            class="form-control form-control-dark text-bg-dark"
+            class="form-control form-control-dark text-white"
             placeholder="Search..."
             aria-label="Search"
           />
@@ -64,30 +71,52 @@ const logout = () => {
             class="btn btn-outline-light me-2"
             >Login</RouterLink
           >
-          <button
+          <RouterLink
             v-if="!auth.isAuthenticated"
+            to="/register"
             type="button"
             class="btn btn-warning"
           >
             Sign-up
-          </button>
-          <div v-if="auth.isAuthenticated" class="btn-group">
-  <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-    {{ auth.user}}
-  </button>
-  <ul class="dropdown-menu dropdown-menu-end">
-    <li><a class="dropdown-item" href="user-settings">Settings</a></li>
-    <li><a class="dropdown-item" href="#">Another action</a></li>
-    <li><hr class="dropdown-divider" /></li>
-    <li>
-      <a @click="logout" href="#" class="dropdown-item">Logout</a>
-    </li>
-  </ul>
-</div>
+          </RouterLink>
+          <RouterLink v-if="auth.isAuthenticated" to="#" class="btn-group">
+            <div
+              class="avatar rounded-circle overflow-hidden border border-light dropdown-toggle"
+              style="width: 44px; height: 44px"
+              data-bs-toggle="dropdown"
+            >
+              <img
+                src="@/assets/pictures/pixabay.jpg"
+                alt="User Avatar"
+                style="width: 100%; height: 100%; object-fit: cover"
+              />
+            </div>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                <RouterLink class="dropdown-item" to="user-settings"
+                  >Settings</RouterLink
+                >
+              </li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li><hr class="dropdown-divider" /></li>
+              <li>
+                <a @click="logout" href="#" class="dropdown-item">Logout</a>
+              </li>
+            </ul>
+          </RouterLink>
         </div>
       </div>
     </div>
   </header>
 </template>
 
-<style scoped></style>
+<style scoped>
+.text-bg-gradient {
+  background-image: linear-gradient(
+    to right,
+    #21627cda,
+    #250333
+  ); /* Change the colors here */
+  color: rgb(255, 255, 255); /* Set text color to white */
+}
+</style>
