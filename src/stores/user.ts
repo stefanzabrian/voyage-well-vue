@@ -52,7 +52,7 @@ export const useUserStore = defineStore({
       if (response.status == 200) {
         return true;
       } else {
-        const responseData = await response.text();
+        const responseData = await response.json();
         console.log("Error", responseData);
       }
     },

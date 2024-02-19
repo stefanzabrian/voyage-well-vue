@@ -22,11 +22,15 @@ export const useAuthStore = defineStore({
     const storedUser = localStorage.getItem("user");
     const storedToken = localStorage.getItem("token");
     const storedAuthority = localStorage.getItem("authority");
+    const storedAvatarUrl = localStorage.getItem("avatarUrl");
+    const storedNickName = localStorage.getItem("nickName");
 
     return {
       user: storedUser ? JSON.parse(storedUser) : null,
       token: storedToken ? JSON.parse(storedToken) : null,
       authority: storedAuthority ? JSON.parse(storedAuthority) : null,
+      avatarUrl: storedAvatarUrl ? JSON.parse(storedAvatarUrl) : null,
+      nickName: storedNickName ? JSON.parse(storedNickName) : null,
     };
   },
 
@@ -58,16 +62,24 @@ export const useAuthStore = defineStore({
         const accessToken = responseData.accessToken;
         const tokenPayload = parseJwt(accessToken);
         const authority = tokenPayload.authorities[0];
+        const avatarUrl = responseData.avatarUrl;
+        const nickName = responseData.nickName;
 
         localStorage.setItem("user", JSON.stringify(email));
         localStorage.setItem("token", JSON.stringify(accessToken));
         localStorage.setItem("authority", JSON.stringify(authority));
+        localStorage.setItem("avatarUrl", JSON.stringify(avatarUrl));
+        localStorage.setItem("nickName", JSON.stringify(nickName));
         this.user = email;
         this.token = accessToken;
         this.authority = authority;
+        this.avatarUrl = avatarUrl;
+        this.nickName = nickName;
         router.push("/");
         return true;
       } else {
+        const responseData = await response.json();
+        console.log("Error: " , responseData)
         return false;
       }
     },
@@ -99,12 +111,24 @@ export const useAuthStore = defineStore({
         router.push("/login");
         return true;
       } else if (response.status == 409) {
+        const responseData = await response.json();
+        console.log("Error: " , responseData)
+        console.log("Status: " , response.status)
         return 409;
       } else if (response.status == 400) {
+        const responseData = await response.json();
+        console.log("Error: " , responseData)
+        console.log("Status: " , response.status)
         return 400;
       } else if (response.status == 500) {
+        const responseData = await response.json();
+        console.log("Error: " , responseData)
+        console.log("Status: " , response.status)
         return 500;
       } else {
+        const responseData = await response.json();
+        console.log("Error: " , responseData)
+        console.log("Status: " , response.status)
         return false;
       }
     },
@@ -113,9 +137,13 @@ export const useAuthStore = defineStore({
       this.user = null;
       this.token = null;
       this.authority = null;
+      this.avatarUrl = null;
+      this.nickName = null;
       localStorage.removeItem("user");
       localStorage.removeItem("token");
       localStorage.removeItem("authority");
+      localStorage.removeItem("avatarUrl");
+      localStorage.removeItem("nickName");
       router.push("/login");
     },
   },

@@ -143,6 +143,7 @@ async function onSubmit() {
                   class="form-control"
                   placeholder="Firstname"
                   v-model="user.firstName"
+                  required="true"
                 />
               </div>
               <div class="form-group col-md-6">
@@ -153,6 +154,7 @@ async function onSubmit() {
                   class="form-control"
                   placeholder="Last name"
                   v-model="user.lastName"
+                  required="true"
                 />
               </div>
               <div class="form-group col-md-6">
@@ -163,6 +165,7 @@ async function onSubmit() {
                   class="form-control"
                   placeholder="Nick name"
                   v-model="user.nickName"
+                  required="true"
                 />
               </div>
               <div class="form-group col-md-2">
@@ -173,6 +176,7 @@ async function onSubmit() {
                   id="phone-number"
                   placeholder="+40 727 999 000..."
                   v-model="user.phoneNumber"
+                  required="true"
                 />
               </div>
             </div>
@@ -184,6 +188,7 @@ async function onSubmit() {
                 id="email"
                 placeholder="example@email.com"
                 v-model="user.email"
+                required="true"
               />
             </div>
             <div class="form-group">
@@ -194,6 +199,7 @@ async function onSubmit() {
                 id="bio0info"
                 placeholder="Say something about you..."
                 v-model="user.bioInfo"
+                required="true"
               />
             </div>
             <div class="form-row">
@@ -205,6 +211,7 @@ async function onSubmit() {
                   id="avatar-url"
                   placeholder="https://url.jpg"
                   v-model="user.avatarUrl"
+                  required="true"
                 />
               </div>
             </div>
