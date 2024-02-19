@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { useAuthStore } from '@/stores/auth';
-import { useUserStore } from '@/stores/user';
-import { onMounted, reactive } from 'vue';
+import { useUserStore } from "@/stores/user";
+import { onMounted, reactive, ref } from "vue";
 
+const updateAttempted = ref(false);
+const successAttepted = ref(false);
 const user = reactive({
   firstName: "",
   lastName: "",
@@ -10,14 +11,14 @@ const user = reactive({
   email: "",
   bioInfo: "",
   phoneNumber: "",
-  avatarUrl: ""
-})
+  avatarUrl: "",
+});
 const userStore = useUserStore();
 
 onMounted(async () => {
   // Call the profileView function to fetch user data
   const userData = await userStore.profileView();
-  
+
   // Populate the user reactive object with the fetched data
   user.firstName = userData.firstName;
   user.lastName = userData.lastName;
@@ -28,6 +29,22 @@ onMounted(async () => {
   user.avatarUrl = userData.avatarUrl;
 });
 
+async function onSubmit() {
+  const successUpdated = userStore.profileUpdate(
+    user.firstName,
+    user.lastName,
+    user.nickName,
+    user.email,
+    user.bioInfo,
+    user.phoneNumber,
+    user.avatarUrl
+  );
+  if (!successUpdated) {
+    updateAttempted.value = true;
+  } else {
+    successAttepted.value = true;
+  }
+}
 </script>
 
 <template>
@@ -62,8 +79,24 @@ onMounted(async () => {
               >
             </li>
           </ul>
-          <form>
+          <form method="PATCH" @submit.prevent="onSubmit">
             <div class="row mt-5 align-items-center">
+              <!--Alert-->
+              <div
+                v-if="updateAttempted"
+                class="alert alert-light"
+                role="alert"
+              >
+                Update failed!
+              </div>
+              <!--Alert-->
+              <div
+                v-if="successAttepted"
+                class="alert alert-light"
+                role="alert"
+              >
+                Update Success!
+              </div>
               <div class="col-md-3 text-center mb-5">
                 <div class="avatar avatar-xl">
                   <img
@@ -76,7 +109,9 @@ onMounted(async () => {
               <div class="col">
                 <div class="row align-items-center">
                   <div class="col-md-7">
-                    <h4 class="mb-1">{{user.firstName}} {{user.lastName}}</h4>
+                    <h4 class="mb-1">
+                      {{ user.firstName }} {{ user.lastName }}
+                    </h4>
                     <p class="small mb-3">
                       <span class="badge text-white">New York, USA</span>
                     </p>
@@ -85,7 +120,7 @@ onMounted(async () => {
                 <div class="row mb-4">
                   <div class="col-md-7">
                     <p class="text-white">
-                      {{user.bioInfo}}
+                      {{ user.bioInfo }}
                     </p>
                   </div>
                   <div class="col">

@@ -23,5 +23,38 @@ export const useUserStore = defineStore({
         console.log(JSON.stringify(errorBody));
       }
     },
+    async profileUpdate(
+      firstName: string,
+      lastName: string,
+      nickName: string,
+      email: string,
+      bioInfo: string,
+      phoneNumber: string,
+      avatarUrl: string
+    ) {
+      const token = useAuthStore().token;
+      const response = await fetch(`${BASE_URL}/user/profile-update`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          firstName,
+          lastName,
+          nickName,
+          email,
+          bioInfo,
+          phoneNumber,
+          avatarUrl,
+        }),
+      });
+      if (response.status == 200) {
+        return true;
+      } else {
+        const responseData = await response.text();
+        console.log("Error", responseData);
+      }
+    },
   },
 });
