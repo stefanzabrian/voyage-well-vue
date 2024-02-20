@@ -91,7 +91,7 @@ async function onSubmit() {
                     role="alert"
                   >
                     Email already exists!
-                    <a class="link-info" href="#!">Forgot password?</a>
+                    <a class="link-info" href="/forgot-password">Forgot password?</a>
                   </div>
                   <!-- Alert Message -->
                   <div
@@ -208,7 +208,7 @@ async function onSubmit() {
                     </button>
                   </div>
                   <p class="small mb-1 pb-lg-2">
-                    <a class="link-info" href="#!">Forgot password?</a>
+                    <a class="link-info" href="/forgot-password">Forgot password?</a>
                   </p>
                   <p>
                     Already a member?

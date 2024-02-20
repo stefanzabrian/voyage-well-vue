@@ -4,11 +4,17 @@ import HomeView from "@/views/HomeView.vue";
 import RegisterView from "@/views/auth/RegisterView.vue";
 import UserSettingsView from "@/views/user/UserSettingsView.vue";
 import UserSettingsNotificationView from "@/views/user/UserSettingsNotificationView.vue";
+import ForgotPasswordView from "@/views/user/ForgotPasswordView.vue";
 import { useAuthStore } from "@/stores/auth";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: "/forgot-password",
+      name: "forgot-password",
+      component: ForgotPasswordView,
+    },
     {
       path: "/register",
       name: "Register",
@@ -36,7 +42,7 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to) => {
-  const publicPages = ["/login", "/register", "/user/forgot-password","/user/reset-password","/"];
+  const publicPages = ["/login", "/register", "/forgot-password","/user/reset-password","/"];
   const authRequired = !publicPages.includes(to.path);
   const auth = useAuthStore();
 

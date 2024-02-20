@@ -32,7 +32,8 @@ export const useUserStore = defineStore({
       phoneNumber: string,
       avatarUrl: string
     ) {
-      const token = useAuthStore().token;
+      const auth = useAuthStore();
+      const token = auth.token;
       const response = await fetch(`${BASE_URL}/user/profile-update`, {
         method: "PATCH",
         headers: {
@@ -50,11 +51,37 @@ export const useUserStore = defineStore({
         }),
       });
       if (response.status == 200) {
+        localStorage.setItem("avatarUrl", JSON.stringify(avatarUrl));
+        localStorage.setItem("nickName", JSON.stringify(nickName));
+        auth.avatarUrl = avatarUrl;
+        auth.nickName = nickName;
         return true;
       } else {
         const responseData = await response.json();
         console.log("Error", responseData);
       }
     },
+    async recoverAccount(email:string) {
+      const response = await fetch(`${BASE_URL}/forgot-password`,{
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        mode: "cors",
+        body: JSON.stringify(email),
+      });
+      localStorage.removeItem("forgotPasswordToken");
+      if (response.status == 200) {
+        const responseData = await response.text();
+        localStorage.setItem("forgotPasswordToken", responseData);
+        return true;
+      } else {
+        const responseData = await response.json();
+        console.log("Error", responseData);
+        console.log(response.status);
+        return false;
+      }
+    }
   },
 });
