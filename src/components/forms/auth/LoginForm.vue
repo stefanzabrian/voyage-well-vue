@@ -66,6 +66,7 @@ async function onSubmit() {
                       type="email"
                       id="email"
                       autocomplete="username"
+                      required="true"
                       class="form-control form-control-lg"
                     />
                     <label class="form-label" for="email">Email address</label>
@@ -77,6 +78,7 @@ async function onSubmit() {
                       type="password"
                       id="password"
                       autocomplete="current-password"
+                      required="true"
                       class="form-control form-control-lg"
                     />
                     <label class="form-label" for="password">Password</label>

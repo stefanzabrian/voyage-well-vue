@@ -6,10 +6,12 @@ import { onMounted, reactive, ref } from "vue";
 const auth = useAuthStore();
 const userStore = useUserStore();
 
-// Define a reactive variable to track whether recover was attempted
-const recoverAttempted = ref(false);
-// Define a reactive variable to track whether recover was successfully
-const recoverTrue = ref(false);
+// Define a reactive variable to track whether reset password was attempted
+const resetAttempted = ref(false);
+// Define a reactive variable to track whether reset password was susscessful
+const resetTrue = ref(false);
+// Define a reactive variable to track whether the fields match
+const passwordDontMatch = ref(false);
 
 // Add a reactive variable to control form visibility
 const formVisible = ref(false);
@@ -21,17 +23,25 @@ onMounted(() => {
 });
 
 const user = reactive({
-  email: "",
+  password: "",
+  confirmPassword: ""
 });
 
 async function onSubmit() {
-  if (user.email != "") {
-    const recoverSuccess = await userStore.recoverAccount(user.email);
-    if (!recoverSuccess) {
-        recoverAttempted.value = true;
+  if (user.password != "" && user.confirmPassword != "") {
+    if (user.password !== user.confirmPassword) {
+      passwordDontMatch.value = true;
+      return; // Prevent further execution
+    }
+    if (user.password == user.confirmPassword) {
+      passwordDontMatch.value = false;
+    }
+    const resetSuccess = await userStore.resetPassword(user.password, user.confirmPassword);
+    if (!resetSuccess) {
+        resetAttempted.value = true;
     } else {
-        recoverAttempted.value = false;
-        recoverTrue.value = true;
+        resetAttempted.value = false;
+        resetTrue.value = true;
     }
   }
 }
@@ -53,54 +63,67 @@ async function onSubmit() {
                   style="width: 23rem"
                 >
                   <h3 class="fw-normal mb-3 pt-2" style="letter-spacing: 1px">
-                    Recover account
+                    Reset password
                   </h3>
 
                   <!-- Alert Message -->
                   <div
-                    v-if="!auth.isAuthenticated && recoverAttempted"
+                    v-if="!auth.isAuthenticated && resetAttempted"
                     class="alert alert-light"
                     role="alert"
                   >
-                    Failed to send the email!
+                    An error occurred!
                   </div>
                   <!-- Alert Message -->
                   <div
-                    v-if="!auth.isAuthenticated && recoverTrue"
+                    v-if="!auth.isAuthenticated && passwordDontMatch"
                     class="alert alert-light"
                     role="alert"
                   >
-                    Check your email to reset your password!
+                    Password and Confirm Password must match!
+                  </div>
+                  <!-- Alert Message -->
+                  <div
+                    v-if="!auth.isAuthenticated && resetTrue"
+                    class="alert alert-light"
+                    role="alert"
+                  >
+                    Your password was reseted successfully!
+                    <a class="link-info" href="/login">Login</a>
                   </div>
 
                   <div class="form-outline mb-4">
                     <input
-                      v-model="user.email"
-                      type="email"
-                      id="email"
-                      autocomplete="username"
+                      v-model="user.password"
+                      type="password"
+                      id="password"
                       required="true"
                       class="form-control form-control-lg"
                     />
-                    <label class="form-label" for="email">Email address</label>
+                    <label class="form-label" for="password">New password</label>
+                  </div>
+                  <div class="form-outline mb-4">
+                    <input
+                      v-model="user.confirmPassword"
+                      type="password"
+                      id="confirmPassword"
+                      required="true"
+                      class="form-control form-control-lg"
+                    />
+                    <label class="form-label" for="confirmPassword">Confirm Password</label>
                   </div>
                   
                   <div class="pt-1 mb-4">
                     <button class="btn btn-info btn-lg btn-block" type="submit">
-                      Send
+                      Reset
                     </button>
                   </div>
-
-                  <p>
-                    Don't have an account?
-                    <a href="/register" class="link-info">Register here</a>
-                  </p>
                 </form>
 
                 <!--Image Container-->
                 <div class="col-sm-6 px-5 d-none d-sm-flex mt-4 mb-4">
                   <img
-                    src="@/assets/pictures/fineas-anton.jpg"
+                    src="@/assets/pictures/pexels-nati.jpg"
                     alt="Login image"
                     class="w-100 h-100"
                     style="object-fit: cover; object-position: center"

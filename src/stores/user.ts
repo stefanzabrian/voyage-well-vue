@@ -1,10 +1,10 @@
 import { useAuthStore } from "./auth";
 import { BASE_URL } from "@/router/api";
 import { defineStore } from "pinia";
+import { usePassStore } from "./pass";
 
 export const useUserStore = defineStore({
   id: "userStore",
-
   actions: {
     async profileView() {
       const token = useAuthStore().token;
@@ -75,6 +75,28 @@ export const useUserStore = defineStore({
       if (response.status == 200) {
         const responseData = await response.text();
         localStorage.setItem("forgotPasswordToken", responseData);
+        return true;
+      } else {
+        const responseData = await response.json();
+        console.log("Error", responseData);
+        console.log(response.status);
+        return false;
+      }
+    },
+    async resetPassword(password:string, confirmPassword:string) {
+      const forgotPasswordToken = usePassStore().passToken;
+      console.log("pass", forgotPasswordToken);
+      const response = await fetch(`${BASE_URL}/reset-password?token=${forgotPasswordToken}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include",
+        mode: "cors",
+        body: JSON.stringify({password, confirmPassword}),
+      });
+      if (response.status == 200) {
+        localStorage.removeItem("forgotPasswordToken");
         return true;
       } else {
         const responseData = await response.json();

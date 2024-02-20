@@ -147,7 +147,7 @@ async function onSubmit() {
                       required="true"
                       class="form-control form-control-lg"
                     />
-                    <label class="form-label" for="password"
+                    <label class="form-label" for="confirm-password"
                       >Confirm Password</label
                     >
                   </div>
@@ -160,7 +160,7 @@ async function onSubmit() {
                       required="true"
                       class="form-control form-control-lg"
                     />
-                    <label class="form-label" for="password">First Name</label>
+                    <label class="form-label" for="first-name">First Name</label>
                   </div>
                   <div class="form-outline mb-4">
                     <input
@@ -171,7 +171,7 @@ async function onSubmit() {
                       required="true"
                       class="form-control form-control-lg"
                     />
-                    <label class="form-label" for="password">Last Name</label>
+                    <label class="form-label" for="last-name">Last Name</label>
                   </div>
                   <div class="form-outline mb-4">
                     <input
@@ -182,7 +182,7 @@ async function onSubmit() {
                       required="true"
                       class="form-control form-control-lg"
                     />
-                    <label class="form-label" for="password">Nick Name</label>
+                    <label class="form-label" for="nick-name">Nick Name</label>
                   </div>
 
                   <!-- Checkbox -->

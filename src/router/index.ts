@@ -5,11 +5,30 @@ import RegisterView from "@/views/auth/RegisterView.vue";
 import UserSettingsView from "@/views/user/UserSettingsView.vue";
 import UserSettingsNotificationView from "@/views/user/UserSettingsNotificationView.vue";
 import ForgotPasswordView from "@/views/user/ForgotPasswordView.vue";
+import ResetPasswordView from "@/views/user/ResetPasswordView.vue";
 import { useAuthStore } from "@/stores/auth";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: "/reset-password",
+      name: "resset-password",
+      component: ResetPasswordView,
+      props: (route) => ({ token: route.query.token }),
+      beforeEnter: (to, from, next) => {
+        const passToken = localStorage.getItem("forgotPasswordToken");
+        const tokenFromRoute = to.query.token;
+        if (passToken === tokenFromRoute) {
+          // If passToken matches the token from the route, proceed to ResetPasswordView
+          next();
+        } else {
+          // If passToken does not match, redirect to some other route or display an error
+          alert("Link Expired or Wrong Link!");
+          next("/"); // Redirect to some other route
+        }
+      },
+    },
     {
       path: "/forgot-password",
       name: "forgot-password",
@@ -42,7 +61,7 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to) => {
-  const publicPages = ["/login", "/register", "/forgot-password","/user/reset-password","/"];
+  const publicPages = ["/login", "/register", "/forgot-password","/reset-password","/"];
   const authRequired = !publicPages.includes(to.path);
   const auth = useAuthStore();
 
