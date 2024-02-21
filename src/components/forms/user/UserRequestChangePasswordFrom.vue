@@ -6,10 +6,10 @@ import { onMounted, reactive, ref } from "vue";
 const auth = useAuthStore();
 const userStore = useUserStore();
 
-// Define a reactive variable to track whether recover was attempted
-const recoverAttempted = ref(false);
-// Define a reactive variable to track whether recover was successfully
-const recoverTrue = ref(false);
+// Define a reactive variable to track whether verify identity was attempted
+const verifyIdentityAttempted = ref(false);
+// Define a reactive variable to track whether verify identity was successfully
+const identityTrue = ref(false);
 
 // Add a reactive variable to control form visibility
 const formVisible = ref(false);
@@ -21,17 +21,19 @@ onMounted(() => {
 });
 
 const user = reactive({
-  email: "",
+  password: "",
 });
 
 async function onSubmit() {
-  if (user.email != "") {
-    const recoverSuccess = await userStore.recoverAccount(user.email);
-    if (!recoverSuccess) {
-      recoverAttempted.value = true;
+  if (user.password != "") {
+    const verifyIdentitySuccess = await userStore.requestPasswordChange(
+      user.password
+    );
+    if (!verifyIdentitySuccess) {
+      verifyIdentityAttempted.value = true;
     } else {
-      recoverAttempted.value = false;
-      recoverTrue.value = true;
+      verifyIdentityAttempted.value = false;
+      identityTrue.value = true;
     }
   }
 }
@@ -53,57 +55,69 @@ async function onSubmit() {
                   style="width: 23rem"
                 >
                   <h3 class="fw-normal mb-3 pt-2" style="letter-spacing: 1px">
-                    Recover account
+                    Verify identity
                   </h3>
 
                   <!-- Alert Message -->
                   <div
-                    v-if="recoverAttempted"
+                    v-if="auth.isAuthenticated && verifyIdentityAttempted"
                     class="alert alert-light"
                     role="alert"
                   >
-                    Failed to send the email!
+                    Failed to verify identity!
                   </div>
                   <!-- Alert Message -->
                   <div
-                    v-if="recoverTrue"
+                    v-if="auth.isAuthenticated && identityTrue"
                     class="alert alert-light"
                     role="alert"
                   >
-                    Check your email to reset your password!
+                    Follow the link on your email to update password!
                   </div>
 
-                  <div class="form-outline mb-4" v-if="!recoverTrue">
+                  <div
+                    class="form-outline mb-4"
+                    v-if="auth.isAuthenticated && !identityTrue"
+                  >
                     <input
-                      v-model="user.email"
-                      type="email"
-                      id="email"
-                      autocomplete="username"
+                      v-model="user.password"
+                      type="password"
+                      id="password"
                       required="true"
                       class="form-control form-control-lg"
                     />
-                    <label class="form-label" for="email">Email address</label>
+                    <label class="form-label" for="password"
+                      >Current Password</label
+                    >
                   </div>
 
-                  <div class="pt-1 mb-4" v-if="!recoverTrue">
+                  <div
+                    class="pt-1 mb-4"
+                    v-if="auth.isAuthenticated && !identityTrue"
+                  >
                     <button class="btn btn-info btn-lg btn-block" type="submit">
-                      Send
+                      Confirm
                     </button>
                   </div>
-                  <div class="pt-1 mb-4" v-if="recoverTrue">
+                  <div
+                    class="pt-1 mb-4"
+                    v-if="auth.isAuthenticated && identityTrue"
+                  >
                     <a class="btn btn-info btn-lg btn-block" href="/"> Ok </a>
                   </div>
 
-                  <p v-if="!auth.isAuthenticated && !recoverTrue">
-                    Don't have an account?
-                    <a href="/register" class="link-info">Register here</a>
+                  <p v-if="auth.isAuthenticated && !identityTrue">
+                    Forgot password?
+                    <a href="/forgot-password" class="link-info"
+                      >Recover here</a
+                    >
                   </p>
                 </form>
 
                 <!--Image Container-->
                 <div class="col-sm-6 px-5 d-none d-sm-flex mt-4 mb-4">
                   <img
-                    src="@/assets/pictures/fineas-anton.jpg"
+                    src="@/assets/pictures/pexels-sara-mazin.jpg"
                     alt="Login image"
                     class="w-100 h-100"
                     style="object-fit: cover; object-position: center"

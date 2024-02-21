@@ -216,6 +216,9 @@ async function onSubmit() {
               </div>
             </div>
             <hr class="my-4" />
+            <p>Change password?
+              <a href="/request-change-password" class="link-info">Click here</a>
+            </p>
             <button type="submit" class="btn btn-primary">Save Change</button>
           </form>
         </div>

@@ -6,11 +6,36 @@ import UserSettingsView from "@/views/user/UserSettingsView.vue";
 import UserSettingsNotificationView from "@/views/user/UserSettingsNotificationView.vue";
 import ForgotPasswordView from "@/views/user/ForgotPasswordView.vue";
 import ResetPasswordView from "@/views/user/ResetPasswordView.vue";
+import RequestChangePasswordView from "@/views/user/RequestChangePasswordView.vue";
+import ChangePasswordView from "@/views/user/ChangePasswordView.vue";
 import { useAuthStore } from "@/stores/auth";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: "/update-password",
+      name: "update-password",
+      component: ChangePasswordView,
+      props: (route) => ({ token: route.query.token }),
+      beforeEnter: (to, from, next) => {
+        const passChangeToken = localStorage.getItem("changePasswordToken");
+        const tokenFromRoute = to.query.token;
+        if (passChangeToken === tokenFromRoute) {
+          // If passToken matches the token from the route, proceed to ResetPasswordView
+          next();
+        } else {
+          // If passToken does not match, redirect to some other route or display an error
+          alert("Link Expired or Wrong Link!");
+          next("/"); // Redirect to some other route
+        }
+      },
+    },
+    {
+      path: "/request-change-password",
+      name: "request-change-password",
+      component: RequestChangePasswordView,
+    },
     {
       path: "/reset-password",
       name: "resset-password",

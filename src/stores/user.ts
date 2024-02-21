@@ -61,8 +61,8 @@ export const useUserStore = defineStore({
         console.log("Error", responseData);
       }
     },
-    async recoverAccount(email:string) {
-      const response = await fetch(`${BASE_URL}/forgot-password`,{
+    async recoverAccount(email: string) {
+      const response = await fetch(`${BASE_URL}/forgot-password`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -83,18 +83,20 @@ export const useUserStore = defineStore({
         return false;
       }
     },
-    async resetPassword(password:string, confirmPassword:string) {
+    async resetPassword(password: string, confirmPassword: string) {
       const forgotPasswordToken = usePassStore().passToken;
-      console.log("pass", forgotPasswordToken);
-      const response = await fetch(`${BASE_URL}/reset-password?token=${forgotPasswordToken}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        credentials: "include",
-        mode: "cors",
-        body: JSON.stringify({password, confirmPassword}),
-      });
+      const response = await fetch(
+        `${BASE_URL}/reset-password?token=${forgotPasswordToken}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          mode: "cors",
+          body: JSON.stringify({ password, confirmPassword }),
+        }
+      );
       if (response.status == 200) {
         localStorage.removeItem("forgotPasswordToken");
         return true;
@@ -104,6 +106,52 @@ export const useUserStore = defineStore({
         console.log(response.status);
         return false;
       }
-    }
+    },
+    async requestPasswordChange(password: string) {
+      const token = useAuthStore().token;
+      const response = await fetch(`${BASE_URL}/request-change-password`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        credentials: "include",
+        mode: "cors",
+        body: JSON.stringify(password),
+      });
+      localStorage.removeItem("changePasswordToken");
+      if (response.status == 200) {
+        const responseData = await response.text();
+        localStorage.setItem("changePasswordToken", responseData);
+        return true;
+      } else {
+        const responseData = await response.json();
+        console.log("Error", responseData);
+        console.log(response.status);
+        return false;
+      }
+    },
+    async updatePassword(newPassword: string, confirmPassword: string) {
+      const changePasswordToken = usePassStore().passChangeToken;
+      const token = useAuthStore().token;
+      const response = await fetch(`${BASE_URL}/update-password?token=${changePasswordToken}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        credentials: "include",
+        mode: "cors",
+        body: JSON.stringify({ newPassword, confirmPassword }),
+      });
+      if (response.status == 200) {
+        return true;
+      } else {
+        const responseData = await response.json();
+        console.log("Error", responseData);
+        console.log(response.status);
+        return false;
+      }
+    },
   },
 });
