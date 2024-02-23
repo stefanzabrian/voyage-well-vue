@@ -18,8 +18,6 @@ const auth = useAuthStore();
     <main class="main-content">
       <RouterView />
     </main>
-  </div>
-  <div>
     <FooterComponent/>
   </div>
 </template>

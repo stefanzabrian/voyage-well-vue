@@ -3,10 +3,10 @@ import { RouterLink } from "vue-router";
 </script>
 
 <template>
-  <div>
     <div class="p-2 nav-scroller shadow-sm text-bg-gradient">
+      <div class="container">
       <nav
-        class="nav nav-underline justify-content-flex-start"
+        class="nav nav-underline d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"
         aria-label="Secondary navigation"
       >
         <a class="nav-link px-2 text-white" aria-current="page" href="#"
@@ -22,7 +22,7 @@ import { RouterLink } from "vue-router";
                   >Add</router-link
                 >
               </li>
-              <li><a class="dropdown-item" href="#">All</a></li>
+              <li><a class="dropdown-item" href="/hotel-all">All</a></li>
               <li><hr class="dropdown-divider" /></li>
               <li>
                 <a href="#" class="dropdown-item">Action</a>
@@ -35,6 +35,7 @@ import { RouterLink } from "vue-router";
       </nav>
     </div>
   </div>
+
 </template>
 
 <style scoped>
@@ -50,5 +51,8 @@ import { RouterLink } from "vue-router";
 .nav-link {
   cursor: pointer; /* Ensure that the cursor changes to pointer on hover */
   /* Add any other necessary CSS properties */
+}
+.container{
+  max-width: 1220px;
 }
 </style>

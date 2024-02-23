@@ -82,7 +82,7 @@ const logout = () => {
         >
           <input
             type="search"
-            class="form-control form-control-dark text-white"
+            class="form-control form-control-dark text-black"
             placeholder="Search..."
             aria-label="Search"
           />

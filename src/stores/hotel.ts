@@ -1,6 +1,38 @@
 import { BASE_URL } from "@/router/api";
 import { defineStore } from "pinia";
 import { useAuthStore } from "./auth";
+import { ref } from "vue";
+
+
+interface Hotel {
+  id: number;
+  name: string;
+  location: string;
+  description: string;
+  picture1: string;
+  picture2: string;
+  picture3: string;
+  picture4: string;
+  picture5: string;
+  amenities: {
+    id: number;
+    spa: boolean;
+    restaurant: boolean;
+    bar: boolean;
+    wifi: boolean;
+    freeParking: boolean;
+  };
+  roomFeatures: {
+    id: number;
+    wifi: boolean;
+    roomService: boolean;
+    airConditioning: boolean;
+    tv: boolean;
+    balcony: boolean;
+  };
+}
+
+const data = ref<Hotel[]>([]);
 
 export const useHotelStore = defineStore({
   id: "hotelStore",
@@ -62,5 +94,22 @@ export const useHotelStore = defineStore({
         return false;
       }
     },
+    async loadHotels() {
+      const token = useAuthStore().token;
+      const response = await fetch(`${BASE_URL}/hotel/all`,{
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`
+          
+        },
+      });
+      if (response.status == 200) {
+        data.value = await response.json();
+        return data.value;
+      } else {
+        return false;
+      }
+    }
+    
   },
 });

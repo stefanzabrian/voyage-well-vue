@@ -9,11 +9,17 @@ import ResetPasswordView from "@/views/user/ResetPasswordView.vue";
 import RequestChangePasswordView from "@/views/user/RequestChangePasswordView.vue";
 import ChangePasswordView from "@/views/user/ChangePasswordView.vue";
 import HotelAddView from "@/views/hotel/HotelAddView.vue";
+import HotelAllView from "@/views/hotel/HotelAllView.vue";
 import { useAuthStore } from "@/stores/auth";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: "/hotel-all",
+      name: "hotel-all",
+      component: HotelAllView,
+    },
     {
       path: "/hotel-add",
       name: "hotel-add",
