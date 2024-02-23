@@ -168,7 +168,7 @@ async function onSubmit() {
                   required="true"
                 />
               </div>
-              <div class="form-group col-md-2">
+              <div class="form-group col-md-2" v-if="user.phoneNumber == null && user.phoneNumber !== ''">
                 <label for="phone-number">Phone number</label>
                 <input
                   type="text"
@@ -191,7 +191,7 @@ async function onSubmit() {
                 required="true"
               />
             </div>
-            <div class="form-group">
+            <div class="form-group" v-if="user.bioInfo == null && user.bioInfo !== ''">
               <label for="bio-info">Bio info</label>
               <input
                 type="text"
@@ -202,7 +202,7 @@ async function onSubmit() {
                 required="true"
               />
             </div>
-            <div class="form-row">
+            <div class="form-row" v-if="user.avatarUrl == null && user.avatarUrl !== ''">
               <div class="form-group">
                 <label for="avatar-url">Avatar picture url</label>
                 <input

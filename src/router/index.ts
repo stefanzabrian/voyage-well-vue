@@ -8,11 +8,17 @@ import ForgotPasswordView from "@/views/user/ForgotPasswordView.vue";
 import ResetPasswordView from "@/views/user/ResetPasswordView.vue";
 import RequestChangePasswordView from "@/views/user/RequestChangePasswordView.vue";
 import ChangePasswordView from "@/views/user/ChangePasswordView.vue";
+import HotelAddView from "@/views/hotel/HotelAddView.vue";
 import { useAuthStore } from "@/stores/auth";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: "/hotel-add",
+      name: "hotel-add",
+      component: HotelAddView,
+    },
     {
       path: "/update-password",
       name: "update-password",
