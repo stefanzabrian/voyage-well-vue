@@ -2,13 +2,7 @@
   <div class="container-sm">
     <header>
       <!-- Background image -->
-      <div
-        class="p-5 text-center bg-image"
-        style="
-          background-image: url('https://www.libertytravel.com/sites/default/files/styles/full_size/public/LIB1411_BrandRefresh_CorporateImages_HomepageHero_1920x680_01.jpg?itok=3GNeTTjO');
-          height: 20%;
-        "
-      >
+      <div class="p-5 text-center bg-image" style="height: 20%">
         <div>
           <div class="d-flex justify-content-center align-items-center h-100">
             <div class="header">
@@ -47,53 +41,68 @@
     </header>
     <div class="container">
       <div v-if="hotels && hotels.length" class="card-container">
-        <div class="card" v-for="hotel in hotels" :key="hotel.id">
-          <div
-            :id="'carouselExampleFade_' + hotel.id"
-            class="carousel slide carousel-fade"
-          >
-            <div class="carousel-inner">
+        <div class="card-container">
+          <div class="card" v-for="hotel in hotels" :key="hotel.id">
+            <div style="padding: 0%;">
               <div
-                class="carousel-item"
-                v-for="(image, index) in hotelImages(hotel)"
-                :key="index"
-                :class="{ active: index === 0 }"
+                :id="'carouselExampleFade_' + hotel.id"
+                class="carousel slide carousel-fade my-img"
               >
-                <img :src="image" class="d-block w-100" alt="..." />
-                <button
-                  class="carousel-control-prev"
-                  type="button"
-                  :data-bs-target="'#carouselExampleFade_' + hotel.id"
-                  data-bs-slide="prev"
+                <div class="carousel-inner">
+                  <div
+                    class="carousel-item"
+                    v-for="(image, index) in hotelImages(hotel)"
+                    :key="index"
+                    :class="{ active: index === 0 }"
+                  >
+                    <img :src="image" class="d-block w-100 my-img2" alt="..." />
+                    <button
+                      class="carousel-control-prev"
+                      type="button"
+                      :data-bs-target="'#carouselExampleFade_' + hotel.id"
+                      data-bs-slide="prev"
+                    >
+                      <span
+                        class="carousel-control-prev-icon"
+                        aria-hidden="true"
+                      ></span>
+                      <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button
+                      class="carousel-control-next"
+                      type="button"
+                      :data-bs-target="'#carouselExampleFade_' + hotel.id"
+                      data-bs-slide="next"
+                    >
+                      <span
+                        class="carousel-control-next-icon"
+                        aria-hidden="true"
+                      ></span>
+                      <span class="visually-hidden">Next</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <!--Body-->
+              <div class="card-body card-body-1">
+                <h5 class="card-title">{{ hotel.name }}</h5>
+                <p class="card-text">
+                  
+                </p>
+                <a href="#!" class="btn btn-primary" data-mdb-ripple-init
+                  >Button</a
                 >
-                  <span
-                    class="carousel-control-prev-icon"
-                    aria-hidden="true"
-                  ></span>
-                  <span class="visually-hidden">Previous</span>
-                </button>
-                <button
-                  class="carousel-control-next"
-                  type="button"
-                  :data-bs-target="'#carouselExampleFade_' + hotel.id"
-                  data-bs-slide="next"
-                >
-                  <span
-                    class="carousel-control-next-icon"
-                    aria-hidden="true"
-                  ></span>
-                  <span class="visually-hidden">Next</span>
-                </button>
               </div>
             </div>
-          </div>
-          <!--Body-->
-          <div class="card-body">
-            <h5 class="card-title">{{ hotel.name }}</h5>
-            <p class="card-text">
-              {{ hotel.description }}
-            </p>
-            <a href="#!" class="btn btn-primary" data-mdb-ripple-init>Button</a>
+            <div class="card-body-2">
+              <div class="card-body card-body-2">
+                <h5 class="card-title">{{ hotel.name }}</h5>
+                <p class="card-text"> {{ hotel.description }}</p>
+                <a href="#!" class="btn btn-primary" data-mdb-ripple-init
+                  >Button</a
+                >
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -135,7 +144,7 @@ const hotelImages = (hotel: { [key: string]: any }) => {
 
 /* Media query for phone view */
 @media (max-width: 767px) {
-  .card-body {
+  .card-body-2 {
     display: none; /* Hide cards in phone view */
   }
 }
@@ -188,17 +197,15 @@ const hotelImages = (hotel: { [key: string]: any }) => {
   margin-top: 0%;
   background-image: linear-gradient(
     to right,
-    rgba(206, 78, 5, 0.849),
-    rgba(110, 31, 0, 0.87)
+    rgb(255, 94, 0),
+    rgba(31, 9, 0, 0.589)
   );
   background-size: cover;
   background-position: center;
-  
 }
 .container-sm {
-  max-width: 1100px; /* Set max-width for container */
+  max-width: 1200px; /* Set max-width for container */
   margin: 0 auto; /* Center container */
-  
 }
 
 .card-container {
@@ -208,17 +215,40 @@ const hotelImages = (hotel: { [key: string]: any }) => {
   margin-top: 0px; /* Adjust margin as needed */
   border-radius: 5%;
 }
-
+.my-img {
+  width: 400px;
+  height: 200px;
+  box-shadow: 0px 0px 10px rgb(0, 0, 0);
+}
+.my-img:hover{
+  box-shadow: 0px 0px 10px rgb(43, 139, 194);
+}
+.my-img2 {
+  height: 200px;
+  border-radius: 5px;
+}
+.card-body-2 {
+  width: calc(100% - 0px); /* Adjust width of each card */
+  height: calc(100% - 0px); /* Adjust width of each card */
+}
+.card-body-1 {
+  height: 250px;
+  text-shadow: 0px 0px 10px rgba(78, 151, 194, 0.575);
+}
 .card {
-  background-color: #ecebeb;
-  width: calc(49% - 0px); /* Adjust width of each card */
-  margin-top: 2%;
-  margin-bottom: 2%;
+  background-color: #a0809d;
+  width: calc(100% - 0px); /* Adjust width of each card */
+  margin-top: 1%;
+  margin-bottom: 1%;
   box-shadow: 0px 0px 20px rgb(0, 0, 0);
   transition: box-shadow 0.3s;
-  border-radius: 2%;
-  padding: 1%;
+  border-radius: 5px;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
 }
+
 .card:hover {
   box-shadow: 0px 0px 20px rgb(255, 255, 255); /* Apply box-shadow when hovering */
 }
@@ -226,6 +256,7 @@ const hotelImages = (hotel: { [key: string]: any }) => {
 .bg-image {
   position: relative;
   overflow: hidden;
+  background-image: url("../../.././assets/pictures/aleksandar-pasaric.jpg");
 }
 
 .bg-image img {

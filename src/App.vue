@@ -25,10 +25,9 @@ const auth = useAuthStore();
 <style scoped>
 .app-background {
   position: relative;
-  background-image: url("./assets/pictures/jason-steffan.jpg");
+  background-color: #00e1ff34;
   background-size: cover;
   background-position: center;
-  height: 100vh;
 }
 
 .main-content {
