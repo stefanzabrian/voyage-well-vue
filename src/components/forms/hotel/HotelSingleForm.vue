@@ -1,51 +1,12 @@
 <template>
   <div class="container-sm">
-    <header>
-      <!-- Background image -->
-      <div class="p-5 text-center bg-image" style="height: 20%">
-        <div>
-          <div class="d-flex justify-content-center align-items-center h-100">
-            <div class="header">
-              <h1 class="mb-3 h">Hotels and Places to Stay</h1>
-              <h4 class="mb-3 h">Search names to find the best hotels</h4>
-              <div class="items-div">
-                <form
-                  class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3"
-                  role="search"
-                >
-                  <input
-                    type="search"
-                    class="form-control form-control-dark text-black search"
-                    placeholder="Search..."
-                    aria-label="Search"
-                  />
-                </form>
-                <a
-                  class="btn btn-outline-light btn-lg button"
-                  href="#!"
-                  role="button"
-                  >Call to action</a
-                >
-                <a
-                  class="btn btn-outline-light btn-lg button"
-                  href="#!"
-                  role="button"
-                  >Call to action</a
-                >
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Background image -->
-    </header>
     <div class="container">
-      <div v-if="hotels && hotels.length" class="card-container">
-        <div class="card-container">
-          <div class="card" v-for="hotel in hotels" :key="hotel.id">
-            <div style="padding: 0%;">
+      <div class="card-container">
+        <div v-if="hotel" class="card-container">
+          <div class="card">
+            <div style="padding: 0%">
               <div
-                :id="'carouselExampleFade_' + hotel.id"
+                id="carouselExampleFade"
                 class="carousel slide carousel-fade my-img"
               >
                 <div class="carousel-inner">
@@ -55,11 +16,15 @@
                     :key="index"
                     :class="{ active: index === 0 }"
                   >
-                    <img  @click="navigateToSingleHotel(hotel)" :src="image" class="cursor-pointer d-block w-100 my-img2" alt="..." />
+                    <img
+                      :src="image"
+                      class="cursor-pointer d-block w-100 my-img2"
+                      alt="..."
+                    />
                     <button
                       class="carousel-control-prev"
                       type="button"
-                      :data-bs-target="'#carouselExampleFade_' + hotel.id"
+                      data-bs-target="#carouselExampleFade"
                       data-bs-slide="prev"
                     >
                       <span
@@ -71,7 +36,7 @@
                     <button
                       class="carousel-control-next"
                       type="button"
-                      :data-bs-target="'#carouselExampleFade_' + hotel.id"
+                      data-bs-target="#carouselExampleFade"
                       data-bs-slide="next"
                     >
                       <span
@@ -85,19 +50,39 @@
               </div>
               <!--Body-->
               <div class="card-body card-body-1">
-                <h5 class="card-title">{{ hotel.name }}</h5>
-                <p class="card-text">
-                  
-                </p>
-                <a href="#!" class="btn btn-primary" data-mdb-ripple-init
-                  >Button</a
-                >
+                <div>
+                  <h5 class="card-title">Amenities</h5>
+                  <p class="card-text">Spa: {{ hotel.spa ? "Yes" : "No" }}</p>
+                  <p class="card-text">
+                    Restaurant: {{ hotel.restaurant ? "Yes" : "No" }}
+                  </p>
+                  <p class="card-text">
+                    Free Parking: {{ hotel.freeParking ? "Yes" : "No" }}
+                  </p>
+                  <p class="card-text">Bar: {{ hotel.bar ? "Yes" : "No" }}</p>
+                  <p class="card-text">Wifi: {{ hotel.wifi ? "Yes" : "No" }}</p>
+                  <h5 class="card-title">Room features</h5>
+                  <p class="card-text">
+                    Air Conditioning: {{ hotel.airConditioning ? "Yes" : "No" }}
+                  </p>
+                  <p class="card-text">
+                    Room Service: {{ hotel.roomService ? "Yes" : "No" }}
+                  </p>
+                  <p class="card-text">Tv: {{ hotel.tv ? "Yes" : "No" }}</p>
+                  <p class="card-text">
+                    Balcony: {{ hotel.balcony ? "Yes" : "No" }}
+                  </p>
+                  <p class="card-text">
+                    Room Wifi: {{ hotel.roomWifi ? "Yes" : "No" }}
+                  </p>
+                </div>
               </div>
             </div>
             <div class="card-body-2">
               <div class="card-body card-body-2">
-                <h5 class="card-title">{{ hotel.name }}</h5>
-                <p class="card-text"> {{ hotel.description }}</p>
+                <h5 class="card-title">{{ hotel.hotelName }}</h5>
+                <p class="card-text">{{ hotel.location }}</p>
+                <p class="card-text">{{ hotel.description }}</p>
                 <a href="#!" class="btn btn-primary" data-mdb-ripple-init
                   >Button</a
                 >
@@ -105,32 +90,20 @@
             </div>
           </div>
         </div>
+        <div v-else></div>
       </div>
-      <div v-else class="card-container">No hotels...</div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import router from "@/router";
 import { useHotelStore } from "@/stores/hotel";
 import { onMounted, ref } from "vue";
+import { useRoute } from "vue-router";
 
-const hotels = ref();
-
-const navigateToSingleHotel = (hotel) => {
-  router.push({
-    name: "single-hotel-view",
-    params: { id: hotel.id.toString() },
-    query: { hotelId: hotel.id.toString() },
-  });
-};
-
+const route = useRoute();
+const hotel = ref({});
 const hotelStore = useHotelStore();
-onMounted(async () => {
-  hotels.value = await hotelStore.loadHotels();
-  console.log("Hotels:", hotels.value); // Log the value of hotels
-});
 
 const hotelImages = (hotel: { [key: string]: any }) => {
   const images = [];
@@ -141,9 +114,21 @@ const hotelImages = (hotel: { [key: string]: any }) => {
       images.push(picture);
     }
   }
-  console.log("Hotel Images:", images); // Log the images for the hotel
   return images;
 };
+
+onMounted(async () => {
+  const hotelId = route.params.id;
+  const hotelQuery = route.query.hotelId;
+
+  if (hotelQuery) {
+    hotel.value = JSON.parse(hotelQuery);
+  }
+  const successHotelLoad = await hotelStore.loadHotel(hotelId);
+  if (successHotelLoad) {
+    hotel.value = successHotelLoad;
+  }
+});
 </script>
 <style scoped>
 .card-body {
@@ -229,7 +214,7 @@ const hotelImages = (hotel: { [key: string]: any }) => {
   height: 200px;
   box-shadow: 0px 0px 10px rgb(0, 0, 0);
 }
-.my-img:hover{
+.my-img:hover {
   box-shadow: 0px 0px 10px rgb(43, 139, 194);
 }
 .my-img2 {
@@ -241,7 +226,7 @@ const hotelImages = (hotel: { [key: string]: any }) => {
   height: calc(100% - 0px); /* Adjust width of each card */
 }
 .card-body-1 {
-  height: 250px;
+  height: 500px;
   text-shadow: 0px 0px 10px rgba(78, 151, 194, 0.575);
 }
 .card {

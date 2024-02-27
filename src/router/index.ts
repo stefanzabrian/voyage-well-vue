@@ -10,11 +10,17 @@ import RequestChangePasswordView from "@/views/user/RequestChangePasswordView.vu
 import ChangePasswordView from "@/views/user/ChangePasswordView.vue";
 import HotelAddView from "@/views/hotel/HotelAddView.vue";
 import HotelAllView from "@/views/hotel/HotelAllView.vue";
+import HotelSingleView from "@/views/hotel/HotelSingleView.vue";
 import { useAuthStore } from "@/stores/auth";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: "/single-hotel-view/:id",
+      name: "single-hotel-view",
+      component: HotelSingleView,
+    },
     {
       path: "/hotel-all",
       name: "hotel-all",

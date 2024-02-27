@@ -3,7 +3,6 @@ import { defineStore } from "pinia";
 import { useAuthStore } from "./auth";
 import { ref } from "vue";
 
-
 interface Hotel {
   id: number;
   name: string;
@@ -33,6 +32,7 @@ interface Hotel {
 }
 
 const data = ref<Hotel[]>([]);
+const singleHotel = ref({});
 
 export const useHotelStore = defineStore({
   id: "hotelStore",
@@ -82,7 +82,7 @@ export const useHotelStore = defineStore({
           isRoomService,
           isBalcony,
           isTv,
-          isRoomWifi
+          isRoomWifi,
         }),
       });
       if (response.status == 200) {
@@ -96,11 +96,10 @@ export const useHotelStore = defineStore({
     },
     async loadHotels() {
       const token = useAuthStore().token;
-      const response = await fetch(`${BASE_URL}/hotel/all`,{
+      const response = await fetch(`${BASE_URL}/hotel/all`, {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`
-          
+          Authorization: `Bearer ${token}`,
         },
       });
       if (response.status == 200) {
@@ -109,7 +108,22 @@ export const useHotelStore = defineStore({
       } else {
         return false;
       }
-    }
-    
+    },
+    async loadHotel(id: any) {
+      const token = useAuthStore().token;
+      const response = await fetch(`${BASE_URL}/hotel/${id}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if(response.status == 200) {
+        singleHotel.value = await response.json();
+        console.log('Hotel Data:', singleHotel.value);
+        return singleHotel.value;
+      } else {
+        return false;
+      }
+    },
   },
 });
