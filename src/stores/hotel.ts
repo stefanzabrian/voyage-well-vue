@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 import { useAuthStore } from "./auth";
 import { ref } from "vue";
 
-interface Hotel {
+export interface Hotel {
   id: number;
   name: string;
   location: string;
@@ -117,10 +117,26 @@ export const useHotelStore = defineStore({
           Authorization: `Bearer ${token}`,
         },
       });
-      if(response.status == 200) {
-        singleHotel.value = await response.json();
-        console.log('Hotel Data:', singleHotel.value);
+      if (response.status == 200) {
+        singleHotel.value = (await response.json()) as Hotel;
+
         return singleHotel.value;
+      } else {
+        return false;
+      }
+    },
+    async updateHotel(hotel: Hotel, id: any) {
+      const token = useAuthStore().token;
+      const response = await fetch(`${BASE_URL}/hotel/${id}`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(hotel),
+      });
+      if(response.status == 200) {
+        return true;
       } else {
         return false;
       }

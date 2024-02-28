@@ -86,9 +86,9 @@
               <!--Body-->
               <div class="card-body card-body-1">
                 <h5 class="card-title">{{ hotel.name }}</h5>
-                <p class="card-text">
+                <p class="card-text">Spa: {{ hotel.amenities.spa ? 'Yes' : 'No' }}</p>
                   
-                </p>
+             
                 <a href="#!" class="btn btn-primary" data-mdb-ripple-init
                   >Button</a
                 >
@@ -118,7 +118,7 @@ import { onMounted, ref } from "vue";
 
 const hotels = ref();
 
-const navigateToSingleHotel = (hotel) => {
+const navigateToSingleHotel = (hotel: { id: { toString: () => any; }; }) => {
   router.push({
     name: "single-hotel-view",
     params: { id: hotel.id.toString() },
@@ -141,7 +141,6 @@ const hotelImages = (hotel: { [key: string]: any }) => {
       images.push(picture);
     }
   }
-  console.log("Hotel Images:", images); // Log the images for the hotel
   return images;
 };
 </script>

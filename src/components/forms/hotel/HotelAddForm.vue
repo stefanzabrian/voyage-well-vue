@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useUserStore } from "@/stores/user";
 import { useHotelStore } from "@/stores/hotel";
-import { onMounted, reactive, ref } from "vue";
+import { reactive, ref } from "vue";
 
 const addAttempted = ref(false);
 const successAddAttepted = ref(false);
@@ -68,7 +68,7 @@ async function onSubmit() {
         <h2 class="h3 mb-4 page-title">Add Hotel</h2>
         <div class="my-4">
           <ul class="nav nav-tabs mb-4" id="myTab" role="tablist"></ul>
-          <form method="PATCH" @submit.prevent="onSubmit">
+          <form method="POST" @submit.prevent="onSubmit">
             <div class="row mt-5 align-items-center">
               <!--Alert-->
               <div v-if="successAddAttepted" class="alert alert-light" role="alert">

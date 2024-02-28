@@ -2,7 +2,7 @@
   <div class="container-sm">
     <div class="container">
       <div class="card-container">
-        <div v-if="hotel" class="card-container">
+        <div v-if="hotel !=null" class="card-container">
           <div class="card">
             <div style="padding: 0%">
               <div
@@ -52,39 +52,39 @@
               <div class="card-body card-body-1">
                 <div>
                   <h5 class="card-title">Amenities</h5>
-                  <p class="card-text">Spa: {{ hotel.spa ? "Yes" : "No" }}</p>
+                  <p class="card-text">Spa: {{ hotel.amenities.spa ? "Yes" : "No" }}</p>
                   <p class="card-text">
-                    Restaurant: {{ hotel.restaurant ? "Yes" : "No" }}
+                    Restaurant: {{ hotel.amenities.restaurant ? "Yes" : "No" }}
                   </p>
                   <p class="card-text">
-                    Free Parking: {{ hotel.freeParking ? "Yes" : "No" }}
+                    Free Parking: {{ hotel.amenities.freeParking ? "Yes" : "No" }}
                   </p>
-                  <p class="card-text">Bar: {{ hotel.bar ? "Yes" : "No" }}</p>
-                  <p class="card-text">Wifi: {{ hotel.wifi ? "Yes" : "No" }}</p>
+                  <p class="card-text">Bar: {{ hotel.amenities.bar ? "Yes" : "No" }}</p>
+                  <p class="card-text">Wifi: {{ hotel.amenities.wifi ? "Yes" : "No" }}</p>
                   <h5 class="card-title">Room features</h5>
                   <p class="card-text">
-                    Air Conditioning: {{ hotel.airConditioning ? "Yes" : "No" }}
+                    Air Conditioning: {{ hotel.roomFeatures.airConditioning ? "Yes" : "No" }}
                   </p>
                   <p class="card-text">
-                    Room Service: {{ hotel.roomService ? "Yes" : "No" }}
+                    Room Service: {{ hotel.roomFeatures.roomService ? "Yes" : "No" }}
                   </p>
-                  <p class="card-text">Tv: {{ hotel.tv ? "Yes" : "No" }}</p>
+                  <p class="card-text">Tv: {{ hotel.roomFeatures.tv ? "Yes" : "No" }}</p>
                   <p class="card-text">
-                    Balcony: {{ hotel.balcony ? "Yes" : "No" }}
+                    Balcony: {{ hotel.roomFeatures.balcony ? "Yes" : "No" }}
                   </p>
                   <p class="card-text">
-                    Room Wifi: {{ hotel.roomWifi ? "Yes" : "No" }}
+                    Room Wifi: {{ hotel.roomFeatures.wifi ? "Yes" : "No" }}
                   </p>
                 </div>
               </div>
             </div>
             <div class="card-body-2">
               <div class="card-body card-body-2">
-                <h5 class="card-title">{{ hotel.hotelName }}</h5>
+                <h5 class="card-title">{{ hotel.name }}</h5>
                 <p class="card-text">{{ hotel.location }}</p>
                 <p class="card-text">{{ hotel.description }}</p>
-                <a href="#!" class="btn btn-primary" data-mdb-ripple-init
-                  >Button</a
+                <router-link :to="{ name: 'edit-hotel-view', params: { id: hotel.id } }" class="btn btn-primary" 
+                  >Edit</router-link
                 >
               </div>
             </div>
@@ -97,12 +97,12 @@
 </template>
 
 <script setup lang="ts">
-import { useHotelStore } from "@/stores/hotel";
+import { type Hotel, useHotelStore } from "@/stores/hotel";
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
-const hotel = ref({});
+const hotel = ref<Hotel | null>(null);
 const hotelStore = useHotelStore();
 
 const hotelImages = (hotel: { [key: string]: any }) => {
@@ -119,11 +119,7 @@ const hotelImages = (hotel: { [key: string]: any }) => {
 
 onMounted(async () => {
   const hotelId = route.params.id;
-  const hotelQuery = route.query.hotelId;
 
-  if (hotelQuery) {
-    hotel.value = JSON.parse(hotelQuery);
-  }
   const successHotelLoad = await hotelStore.loadHotel(hotelId);
   if (successHotelLoad) {
     hotel.value = successHotelLoad;
