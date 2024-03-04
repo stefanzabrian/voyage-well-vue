@@ -30,7 +30,23 @@ import { RouterLink } from "vue-router";
             </ul>
           
         </div>
-        <a class="nav-link px-2 text-white" href="#">Rooms</a>
+        <div class="dropdown">
+          <a class="nav-link px-2 text-white" href="#" data-bs-toggle="dropdown">
+            Rooms</a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                <router-link class="dropdown-item" to="/room-add"
+                  >Add</router-link
+                >
+              </li>
+              <li><a class="dropdown-item" href="#">All</a></li>
+              <li><hr class="dropdown-divider" /></li>
+              <li>
+                <a href="#" class="dropdown-item">Action</a>
+              </li>
+            </ul>
+          
+        </div>
         <a class="nav-link px-2 text-white" href="#">Link</a>
       </nav>
     </div>

@@ -32,7 +32,7 @@ export interface Hotel {
 }
 
 const data = ref<Hotel[]>([]);
-const singleHotel = ref({});
+const singleHotel = ref<Hotel | null>(null);
 
 export const useHotelStore = defineStore({
   id: "hotelStore",

@@ -51,7 +51,7 @@ async function onSubmit() {
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-12 col-lg-10 col-xl-8 mx-auto">
-        <h2 class="h3 mb-4 page-title">Settings</h2>
+        <h2 class="h3 mt-3 mb-4 page-title">{{user.nickName}}</h2>
         <div class="my-4">
           <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
             <li class="nav-item">
@@ -100,7 +100,7 @@ async function onSubmit() {
               <div class="col-md-3 text-center mb-5">
                 <div class="avatar avatar-xl">
                   <img
-                    src="https://bootdey.com/img/Content/avatar/avatar6.png"
+                  :src="user.avatarUrl"
                     alt="..."
                     class="avatar-img rounded-circle"
                   />
@@ -113,7 +113,7 @@ async function onSubmit() {
                       {{ user.firstName }} {{ user.lastName }}
                     </h4>
                     <p class="small mb-3">
-                      <span class="badge text-white">New York, USA</span>
+                      <span class="badge text-white">{{user.email}}</span>
                     </p>
                   </div>
                 </div>
@@ -128,7 +128,7 @@ async function onSubmit() {
                     <p class="small mb-0 text-white">
                       P.O. Box 464, 5975 Eget Avenue
                     </p>
-                    <p class="small mb-0 text-white">(537) 315-1481</p>
+                    <p class="small mb-0 text-white">{{ user.phoneNumber }}</p>
                   </div>
                 </div>
               </div>
@@ -141,7 +141,6 @@ async function onSubmit() {
                   type="text"
                   id="firstname"
                   class="form-control"
-                  placeholder="Firstname"
                   v-model="user.firstName"
                   required="true"
                 />
@@ -152,7 +151,6 @@ async function onSubmit() {
                   type="text"
                   id="lastname"
                   class="form-control"
-                  placeholder="Last name"
                   v-model="user.lastName"
                   required="true"
                 />
@@ -163,18 +161,16 @@ async function onSubmit() {
                   type="text"
                   id="nickname"
                   class="form-control"
-                  placeholder="Nick name"
                   v-model="user.nickName"
                   required="true"
                 />
               </div>
-              <div class="form-group col-md-2" v-if="user.phoneNumber == null && user.phoneNumber !== ''">
+              <div class="form-group col-md-2" v-if="user.phoneNumber != null && user.phoneNumber !== ''">
                 <label for="phone-number">Phone number</label>
                 <input
                   type="text"
                   class="form-control"
                   id="phone-number"
-                  placeholder="+40 727 999 000..."
                   v-model="user.phoneNumber"
                   required="true"
                 />
@@ -186,23 +182,21 @@ async function onSubmit() {
                 type="email"
                 class="form-control"
                 id="email"
-                placeholder="example@email.com"
                 v-model="user.email"
                 required="true"
               />
             </div>
-            <div class="form-group" v-if="user.bioInfo == null && user.bioInfo !== ''">
+            <div class="form-group" v-if="user.bioInfo != null && user.bioInfo !== ''">
               <label for="bio-info">Bio info</label>
               <input
                 type="text"
                 class="form-control"
                 id="bio0info"
-                placeholder="Say something about you..."
                 v-model="user.bioInfo"
                 required="true"
               />
             </div>
-            <div class="form-row" v-if="user.avatarUrl == null && user.avatarUrl !== ''">
+            <div class="form-row" v-if="user.avatarUrl != null && user.avatarUrl !== ''">
               <div class="form-group">
                 <label for="avatar-url">Avatar picture url</label>
                 <input

@@ -3,7 +3,11 @@
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-12 col-lg-10 col-xl-8 mx-auto text-muted">
-          <h2 class="h3 mb-4 page-title">Update Hotel</h2>
+          <h2 class="h3 mb-4 page-title">
+            <router-link :to="'/single-hotel-view/' + hotel.id" class="text-white">Back to hotel 
+              {{ `${hotel?.name}` }}
+            </router-link>
+          </h2>
           <div class="my-4">
             <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
               <li class="nav-item">
@@ -19,7 +23,7 @@
                 >
               </li>
             </ul>
-            <form v-if="hotel !=null" method="POST" @submit.prevent="onSubmit">
+            <form v-if="hotel != null" method="POST" @submit.prevent="onSubmit">
               <div class="row mt-5 align-items-center">
                 <!--Alert-->
                 <div
@@ -306,34 +310,73 @@
 <script setup lang="ts">
 import { type Hotel, useHotelStore } from "@/stores/hotel";
 import { onMounted, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
+const router = useRouter();
 const route = useRoute();
-const hotel = ref<Hotel | null>(null);
+
 const hotelStore = useHotelStore();
 const updateAttempted = ref(false);
 const successAttepted = ref(false);
 const hotelId = route.params.id;
+const previousPageLink = ref('');
+const hotel = ref<Hotel>({
+  id: 0,
+  name: '',
+  location: '',
+  description: '',
+  picture1: '',
+  picture2: '',
+  picture3: '',
+  picture4: '',
+  picture5: '',
+  amenities: {
+    id: 0,
+    spa: false,
+    restaurant: false,
+    bar: false,
+    wifi: false,
+    freeParking: false
+  },
+  roomFeatures: {
+    id: 0,
+    airConditioning: false,
+    roomService: false,
+    balcony: false,
+    tv: false,
+    wifi: false
+  }
+});
 
 onMounted(async () => {
   const hotelId = route.params.id;
   const successHotelLoad = await hotelStore.loadHotel(hotelId);
-  if (successHotelLoad) {
+  if (successHotelLoad !== null && successHotelLoad !== undefined) {
     console.log("HotelASD", successHotelLoad);
     hotel.value = successHotelLoad;
+
+    // Check if the router instance is initialized and if the route is available
+    if (router && router.currentRoute.value) {
+      // Set the previous page link dynamically
+      previousPageLink.value = router.currentRoute.value.fullPath;
+    } else {
+      console.error('Router instance or route is not available.');
+    }
+  } else {
+    console.error('Failed to load hotel data.');
   }
 });
 
 async function onSubmit() {
   const updateSuccess = await hotelStore.updateHotel(hotel.value, hotelId);
-  
+
   if (updateSuccess) {
     successAttepted.value = true;
     updateAttempted.value = false;
   } else {
     successAttepted.value = false;
     updateAttempted.value = true;
-  
+
   }
     // Scroll to the top of the page
     window.scrollTo({ top: 0, behavior: 'smooth' });
