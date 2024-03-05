@@ -13,11 +13,17 @@ import HotelAllView from "@/views/hotel/HotelAllView.vue";
 import HotelSingleView from "@/views/hotel/HotelSingleView.vue";
 import HotelEditView from "@/views/hotel/HotelEditView.vue";
 import RoomAddView from "@/views/room/RoomAddView.vue";
+import RoomAllView from "@/views/room/RoomAllView.vue";
 import { useAuthStore } from "@/stores/auth";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: "/room-all-by-hotel/:id",
+      name: "room-all-by-hotel-id",
+      component: RoomAllView,
+    },
     {
       path: "/room-add/:id",
       name: "room-add",
@@ -103,11 +109,13 @@ const router = createRouter({
       path: "/",
       name: "Home",
       component: HomeView,
-    }, {
+    },
+    {
       path: "/user-settings",
       name: "user-settings",
       component: UserSettingsView,
-    }, {
+    },
+    {
       path: "/user-settings-notifications",
       name: "user-settings-notifications",
       component: UserSettingsNotificationView,
@@ -116,7 +124,13 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to) => {
-  const publicPages = ["/login", "/register", "/forgot-password","/reset-password","/"];
+  const publicPages = [
+    "/login",
+    "/register",
+    "/forgot-password",
+    "/reset-password",
+    "/",
+  ];
   const authRequired = !publicPages.includes(to.path);
   const auth = useAuthStore();
 
@@ -129,7 +143,6 @@ router.beforeEach(async (to) => {
     // For now, let's just log the user out
     return auth.logout();
   }
-
 });
 
 export default router;

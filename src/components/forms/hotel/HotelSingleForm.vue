@@ -84,10 +84,13 @@
                 <p class="card-text">{{ hotel.location }}</p>
                 <p class="card-text">{{ hotel.description }}</p>
                 <router-link :to="{ name: 'edit-hotel-view', params: { id: hotel.id } }" class="btn btn-primary ms-1" 
-                  >Edit</router-link
+                  >Edit Hotel</router-link
                 >
                 <router-link :to="{ name: 'room-add', params: { id: hotel.id } }" class="btn btn-primary ms-1" 
                   >Add Room</router-link
+                >
+                <router-link :to="{ name: 'room-all-by-hotel-id', params: { id: hotel.id } }" class="btn btn-primary ms-1" 
+                  >View all rooms</router-link
                 >
               </div>
             </div>

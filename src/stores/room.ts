@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { useAuthStore } from "./auth";
 import { BASE_URL } from "@/router/api";
+import { ref } from "vue";
 
 export interface Room {
   id: number;
@@ -11,18 +12,20 @@ export interface Room {
   picture3: string;
   picture4: string;
   picture5: string;
-  features: {
+  feature: {
     id: number;
-    wifi: boolean;
     balcony: boolean;
-    bathroom: boolean;
     tv: boolean;
-    airConditioning: boolean;
-    heat: boolean;
     roomService: boolean;
+    airConditioning: boolean;
+    wifi: boolean;
+    heat: boolean;
+    bathroom: boolean;
   };
   type: string;
 }
+
+const rooms = ref<Room[]>([]);
 
 export const useRoomStore = defineStore({
   id: "roomStore",
@@ -72,6 +75,25 @@ export const useRoomStore = defineStore({
       });
       if (response.status == 200) {
         return true;
+      } else {
+        const responseData = await response.json();
+        console.log("Error", responseData);
+        console.log(response.status);
+        return false;
+      }
+    },
+    async loadAllRomms(id: any) {
+      const token = useAuthStore().token;
+      const response = await fetch(`${BASE_URL}/room/all/${id}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.status == 200) {
+        rooms.value = await response.json();
+        return rooms.value;
       } else {
         const responseData = await response.json();
         console.log("Error", responseData);

@@ -128,8 +128,8 @@ const logout = () => {
             </div>
             <ul class="dropdown-menu dropdown-menu-end">
               <li>
-                <RouterLink class="dropdown-item" to="user-settings"
-                  >Settings</RouterLink
+                <router-link class="dropdown-item" to='user-settings'
+                  >Settings</router-link
                 >
               </li>
               <li><a class="dropdown-item" href="#">Another action</a></li>

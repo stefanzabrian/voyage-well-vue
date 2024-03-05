@@ -35,9 +35,6 @@ import { RouterLink } from "vue-router";
             Rooms</a>
             <ul class="dropdown-menu dropdown-menu-end">
               <li>
-                <router-link class="dropdown-item" to="/room-add"
-                  >Add</router-link
-                >
               </li>
               <li><a class="dropdown-item" href="#">All</a></li>
               <li><hr class="dropdown-divider" /></li>
