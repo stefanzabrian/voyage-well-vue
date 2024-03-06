@@ -26,6 +26,7 @@ export interface Room {
 }
 
 const rooms = ref<Room[]>([]);
+const singleRoom = ref<Room | null>(null);
 
 export const useRoomStore = defineStore({
   id: "roomStore",
@@ -101,5 +102,25 @@ export const useRoomStore = defineStore({
         return false;
       }
     },
+    async fetchRoomById(id: any) {
+      const token = useAuthStore().token;
+      const response = await fetch(`${BASE_URL}/room/${id}`,{
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+      });
+      if (response.status == 200) {
+        singleRoom.value = (await response.json()) as Room;
+
+        return singleRoom.value;
+      } else {
+        const responseData = await response.json();
+        console.log("Error", responseData);
+        console.log(response.status);
+        return false;
+      }
+    }
   },
 });

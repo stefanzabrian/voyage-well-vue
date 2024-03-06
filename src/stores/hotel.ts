@@ -106,6 +106,9 @@ export const useHotelStore = defineStore({
         data.value = await response.json();
         return data.value;
       } else {
+        const responseData = await response.json();
+        console.log("Error", responseData);
+        console.log(response.status);
         return false;
       }
     },
@@ -122,6 +125,9 @@ export const useHotelStore = defineStore({
 
         return singleHotel.value;
       } else {
+        const responseData = await response.json();
+        console.log("Error", responseData);
+        console.log(response.status);
         return false;
       }
     },
@@ -138,6 +144,9 @@ export const useHotelStore = defineStore({
       if(response.status == 200) {
         return true;
       } else {
+        const responseData = await response.json();
+        console.log("Error", responseData);
+        console.log(response.status);
         return false;
       }
     },

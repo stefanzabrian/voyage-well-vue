@@ -40,7 +40,7 @@
         <!-- Background image -->
       </header>
       <div class="container">
-        <div v-if="rooms !=null" class="card-container">
+        <div v-if="rooms && rooms.length" class="card-container">
           <div class="card-container">
             <div class="card"  v-for="room in rooms" :key="room.id">
               <div style="padding: 0%;">
@@ -106,8 +106,8 @@
                   <h5 class="card-title">Number : {{ room.number }}</h5>
                   <h5 class="card-title">Type : {{ getTypeName(room.type) }}</h5>
                   <p class="card-text">Description : {{ room.description }}</p>
-                  <a href="#!" class="btn btn-primary" data-mdb-ripple-init
-                    >Button</a
+                  <router-link :to="{ name: 'room-by-id', params: { id: room.id } }" class="btn btn-primary" data-mdb-ripple-init
+                    >View Room Details</router-link
                   >
                 </div>
               </div>
