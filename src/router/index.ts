@@ -15,11 +15,17 @@ import HotelEditView from "@/views/hotel/HotelEditView.vue";
 import RoomAddView from "@/views/room/RoomAddView.vue";
 import RoomAllView from "@/views/room/RoomAllView.vue";
 import RoomSingleView from "@/views/room/RoomSingleView.vue";
+import RoomEditView from "@/views/room/RoomEditView.vue";
 import { useAuthStore } from "@/stores/auth";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: "/room-edit-by/:id",
+      name: "room-edit-by-id",
+      component: RoomEditView,
+    },
     {
       path: "/room-by/:id",
       name: "room-by-id",

@@ -104,11 +104,11 @@ export const useRoomStore = defineStore({
     },
     async fetchRoomById(id: any) {
       const token = useAuthStore().token;
-      const response = await fetch(`${BASE_URL}/room/${id}`,{
+      const response = await fetch(`${BASE_URL}/room/${id}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
       });
       if (response.status == 200) {
@@ -121,6 +121,25 @@ export const useRoomStore = defineStore({
         console.log(response.status);
         return false;
       }
-    }
+    },
+    async roomUpdate(room: Room, id: any) {
+      const token = useAuthStore().token;
+      const response = await fetch(`${BASE_URL}/room/${id}`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(room),
+      });
+      if (response.status == 200) {
+        return true;
+      } else {
+        const responseData = await response.json();
+        console.log("Error", responseData);
+        console.log(response.status);
+        return false;
+      }
+    },
   },
 });

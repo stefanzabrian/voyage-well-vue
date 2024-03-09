@@ -106,8 +106,11 @@
                   <h5 class="card-title">Number : {{ room.number }}</h5>
                   <h5 class="card-title">Type : {{ getTypeName(room.type) }}</h5>
                   <p class="card-text">Description : {{ room.description }}</p>
-                  <router-link :to="{ name: 'room-by-id', params: { id: room.id } }" class="btn btn-primary" data-mdb-ripple-init
-                    >View Room Details</router-link
+                  <router-link :to="{ name: 'room-by-id', params: { id: room.id } }" class="btn btn-primary me-1" data-mdb-ripple-init
+                    >View Room</router-link
+                  >
+                  <router-link :to="{ name: 'room-edit-by-id', params: { id: room.id } }" class="btn btn-primary" data-mdb-ripple-init
+                    >Edit Room</router-link
                   >
                 </div>
               </div>
