@@ -141,5 +141,23 @@ export const useRoomStore = defineStore({
         return false;
       }
     },
+    async deleteRoomById(id: any) {
+      const token = useAuthStore().token;
+      const response = await fetch(`${BASE_URL}/room/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        return true;
+      } else {
+        const responseData = await response.json();
+        console.log("Error", responseData);
+        console.log("Status", response.status);
+        return false;
+      }
+    },
   },
 });

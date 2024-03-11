@@ -36,6 +36,12 @@ const singleHotel = ref<Hotel | null>(null);
 
 export const useHotelStore = defineStore({
   id: "hotelStore",
+  state: () => {
+    const storedHotelId = localStorage.getItem("hotelId");
+    return {
+      hotelId : storedHotelId ? JSON.parse(storedHotelId) : null
+    };
+  },
   actions: {
     async addHotel(
       hotelName: string,
@@ -122,6 +128,8 @@ export const useHotelStore = defineStore({
       });
       if (response.status == 200) {
         singleHotel.value = (await response.json()) as Hotel;
+        localStorage.setItem("hotelId", JSON.stringify(singleHotel.value.id));
+        this.hotelId = singleHotel.value.id;
 
         return singleHotel.value;
       } else {

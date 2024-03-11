@@ -104,7 +104,7 @@ const logout = () => {
           >
             Sign-up
           </RouterLink>
-          <RouterLink v-if="auth.isAuthenticated" to="#" class="btn-group">
+          <div v-if="auth.isAuthenticated" to="#" class="btn-group">
             <!-- New div for nickname -->
             <div class="nickname">
               <span class="nickname-text font-monospace">{{ auth.nickName }}</span>
@@ -128,7 +128,7 @@ const logout = () => {
             </div>
             <ul class="dropdown-menu dropdown-menu-end">
               <li>
-                <router-link class="dropdown-item" to='user-settings'
+                <router-link class="dropdown-item" to="/user-settings"
                   >Settings</router-link
                 >
               </li>
@@ -138,7 +138,7 @@ const logout = () => {
                 <a @click="logout" href="#" class="dropdown-item">Logout</a>
               </li>
             </ul>
-          </RouterLink>
+          </div>
         </div>
       </div>
     </div>
