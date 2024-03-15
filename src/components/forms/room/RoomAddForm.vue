@@ -7,6 +7,7 @@ const addAttempted = ref(false);
 const successAddAttepted = ref(false);
 const room = reactive({
   number: "",
+  price: "",
   description: "",
   picture1: "",
   picture2: "",
@@ -28,6 +29,7 @@ async function onSubmit(id:any) {
   const addSuccess = useRoomStore().addRoom(
     id,
     room.number,
+    room.price,
     room.description,
     room.picture1,
     room.picture2,
@@ -88,6 +90,17 @@ async function onSubmit(id:any) {
                   id="roomnumber"
                   class="form-control"
                   v-model="room.number"
+                  placeholder=""
+                  required="true"
+                />
+              </div>
+              <div class="form-group col-md-6">
+                <label for="roomprice">Room price</label>
+                <input
+                  type="text"
+                  id="roomprice"
+                  class="form-control"
+                  v-model="room.price"
                   placeholder=""
                   required="true"
                 />

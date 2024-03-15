@@ -6,6 +6,7 @@ import { ref } from "vue";
 export interface Room {
   id: number;
   number: string;
+  price:string;
   description: string;
   picture1: string;
   picture2: string;
@@ -34,6 +35,7 @@ export const useRoomStore = defineStore({
     async addRoom(
       id: any,
       number: string,
+      price: string,
       description: string,
       picture1: string,
       picture2: string,
@@ -58,6 +60,7 @@ export const useRoomStore = defineStore({
         },
         body: JSON.stringify({
           number,
+          price,
           description,
           picture1,
           picture2,
