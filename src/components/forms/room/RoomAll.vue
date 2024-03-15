@@ -121,6 +121,7 @@
             <div class="card-body-2">
               <div class="card-body card-body-2">
                 <h5 class="card-title">Number : {{ room.number }}</h5>
+                <h5 class="card-title">Price : {{ room.price }}</h5>
                 <h5 class="card-title">Type : {{ getTypeName(room.type) }}</h5>
                 <p class="card-text">Description : {{ room.description }}</p>
                 <router-link

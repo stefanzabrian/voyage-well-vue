@@ -42,13 +42,24 @@
               <hr class="my-4" />
               <div class="form-row">
                 <div class="form-group col-md-6">
-                  <label for="hotel-name">Room number</label>
+                  <label for="room-number">Room number</label>
                   <input
                     type="text"
-                    id="hotel-name"
+                    id="room-number"
                     class="form-control"
-                    placeholder="hotel-name"
+                    placeholder=""
                     v-model="room.number"
+                    required="true"
+                  />
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="room-price">Room price</label>
+                  <input
+                    type="text"
+                    id="room-price"
+                    class="form-control"
+                    placeholder=""
+                    v-model="room.price"
                     required="true"
                   />
                 </div>
@@ -126,10 +137,10 @@
                   <p>Amenities</p>
                   <div class="form-row amenities-row">
                     <div class="form-group col-md-2 flex-item">
-                      <label for="freeparking">Free wifi</label>
+                      <label for="freewifi">Free wifi</label>
                       <select
                         class="form-control"
-                        id="freeparking"
+                        id="freewifi"
                         v-model="room.feature.wifi"
                         required="true"
                       >
@@ -141,10 +152,10 @@
                       </select>
                     </div>
                     <div class="form-group col-md-2 flex-item">
-                      <label for="restaurant">Balcony</label>
+                      <label for="balcony">Balcony</label>
                       <select
                         class="form-control"
-                        id="restaurant"
+                        id="balcony"
                         v-model="room.feature.balcony"
                         required="true"
                       >
@@ -156,10 +167,10 @@
                       </select>
                     </div>
                     <div class="form-group col-md-2 flex-item">
-                      <label for="bar">Bathroom</label>
+                      <label for="bathroom">Bathroom</label>
                       <select
                         class="form-control"
-                        id="bar"
+                        id="bathroom"
                         v-model="room.feature.bathroom"
                         required="true"
                       >
@@ -171,10 +182,10 @@
                       </select>
                     </div>
                     <div class="form-group col-md-2 flex-item">
-                      <label for="spa">Tv</label>
+                      <label for="tv">Tv</label>
                       <select
                         class="form-control"
-                        id="spa"
+                        id="tv"
                         v-model="room.feature.tv"
                         required="true"
                       >
@@ -186,10 +197,10 @@
                       </select>
                     </div>
                     <div class="form-group col-md-2 flex-item">
-                      <label for="wifi">Air Conditioning</label>
+                      <label for="air-conditioning">Air Conditioning</label>
                       <select
                         class="form-control"
-                        id="wifi"
+                        id="air-conditioning"
                         v-model="room.feature.airConditioning"
                         required="true"
                       >
@@ -205,10 +216,10 @@
                   <p>Room Features</p>
                   <div class="form-row room-features-row">
                     <div class="form-group col-md-2 flex-item">
-                      <label for="airconditioning">Heat</label>
+                      <label for="heat">Heat</label>
                       <select
                         class="form-control"
-                        id="airconditioning"
+                        id="heat"
                         v-model="room.feature.heat"
                         required="true"
                       >
